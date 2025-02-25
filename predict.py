@@ -84,7 +84,7 @@ if True:  # FILE LOADING
     )  # Folder containing valid images (.npy files)
 
     # Checkpoint path for the trained model
-    checkpoint_path = Path("checkpoints/model_final.pth")
+    checkpoint_path = Path("checkpoints/model_100_64_0.0001.pth")
 
     # Where to save predictions (as .npy files)
     pred_dir = base_data_path / "predictions"
@@ -122,7 +122,7 @@ valid_loader = get_pred_dataloader(valid_images_dir)
 # -----------------------------
 from tqdm import tqdm
 
-if False:  # MAKING PREDICTIONS
+if True:  # MAKING PREDICTIONS
     with torch.no_grad():
         for images, keys in tqdm(valid_loader, desc="Predicting samples", unit="batch"):
             images = images.to(device)

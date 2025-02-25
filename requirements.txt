@@ -5,3 +5,14 @@ pandas
 Pillow
 matplotlib
 segmentation-models-pytorch
+scikit-learn
+tqdm
+opencv-python
+albumentations
+pycocotools
+tensorboard
+torchsummary
+torchviz
+torchmetrics
+torch_optimizer
+torch_lr_finder
