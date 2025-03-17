@@ -29,6 +29,7 @@ This repository contains our approach to tackling the **Ultrasonic Well Segmenta
 - Self-supervised learning **did not yield significant gains** due to the difficulty of filtering unreliable pseudo-labels.
 - Best result was attained with B3, pretraining on ImageNet, data augmentation and repatching, small post-processing (eliminating artefacts) : 67,3% IOU.
 
-L.R
+Code by:
+L.R; 
 O.H.
 
