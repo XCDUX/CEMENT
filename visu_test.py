@@ -24,9 +24,7 @@ def main():
     # Define paths (adjust these paths to your environment)
     base_data_path = Path("./DATA/X_test")
     images_dir = base_data_path / "images"  # Folder with original .npy images
-    csv_path = (
-        base_data_path / "y_test_csv_file.csv"
-    )  # CSV file with flattened predictions
+    csv_path = base_data_path / "y_.csv"  # CSV file with flattened predictions
 
     df = pd.read_csv(csv_path, header=None, index_col=0)
     count = 0
@@ -50,10 +48,12 @@ def main():
         else:
             mask = flat_pred.reshape(160, 272)
 
-        # Visualize: display original image and prediction overlay.
-        visualize_sample(image, mask)
+        if count % 5 == 0:
+            # Visualize: display original image and prediction overlay.
+            visualize_sample(image, mask)
+
         count += 1
-        if count == 5:
+        if count == 50:
             break
 
 

@@ -1,15 +1,32 @@
 import torch
 import segmentation_models_pytorch as smp
+import timm
 
 
-def get_model(num_classes):
-    model = smp.Unet(
-        encoder_name="efficientnet-b3",  # Encoder architecture: EfficientNet-B3.
-        encoder_weights="imagenet",  # Pre-trained on ImageNet.
-        in_channels=1,  # Input channels (1 for grayscale).
-        classes=num_classes,  # Number of segmentation classes.
-    )
-    return model
+if False:
+
+    def get_model(num_classes=3):
+        """Creates a U-Net model with EfficientNet-B3 Noisy Student encoder."""
+        model = smp.Unet(
+            encoder_name="timm-efficientnet-b3",  # Use TIMM-based EfficientNet-B3
+            encoder_weights="noisy-student",  # Load Noisy Student pretraining
+            in_channels=1,
+            classes=num_classes,  # Number of output classes
+            activation=None,  # Change to 'softmax' or 'sigmoid' if needed
+        )
+        return model
+
+
+if True:
+
+    def get_model(num_classes):
+        model = smp.Unet(
+            encoder_name="efficientnet-b3",
+            encoder_weights="imagenet",
+            in_channels=1,
+            classes=num_classes,
+        )
+        return model
 
 
 if __name__ == "__main__":

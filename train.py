@@ -8,14 +8,14 @@ from torch.utils.data import DataLoader
 from model import get_model
 from data import get_train_test_dataloaders
 
-BATCH_SIZE = 64
+BATCH_SIZE = 32
 LEARNING_RATE = 1e-4
 NUM_EPOCHS = 60
 NUM_CLASSES = 3
 PATIENCE = 5  # Early stopping patience
 
-IMAGES_DIR = "DATA/X_train/images"
-LABELS_CSV = "DATA/Y_train.csv"
+IMAGES_DIR = "DATA/augmented_dataset_strict/images"
+LABELS_CSV = "DATA/augmented_dataset_strict/labels.csv"
 
 
 def compute_iou(pred, target, num_classes):
@@ -23,7 +23,7 @@ def compute_iou(pred, target, num_classes):
     pred = pred.view(-1)
     target = target.view(-1)
 
-    for cls in range(num_classes):
+    for cls in range(1, num_classes):
         pred_inds = pred == cls
         target_inds = target == cls
         intersection = (pred_inds & target_inds).sum().float()
@@ -44,7 +44,7 @@ def train():
 
     print("Loading data...")
     train_loader, test_loader = get_train_test_dataloaders(
-        IMAGES_DIR, LABELS_CSV, batch_size=BATCH_SIZE, train_ratio=0.8
+        IMAGES_DIR, LABELS_CSV, batch_size=BATCH_SIZE, train_ratio=0.9
     )
     print("Data successfully loaded.")
     print("==============================")
@@ -52,7 +52,7 @@ def train():
     print("Initializing model")
     model = get_model(NUM_CLASSES).to(device)
     criterion = nn.CrossEntropyLoss(ignore_index=-1).to(device)
-    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    optimizer = optim.AdamW(model.parameters(), lr=LEARNING_RATE, weight_decay=1e-5)
     print("Model successfully initialized.")
     print("==============================")
 
@@ -124,7 +124,7 @@ def train():
                 model.state_dict(),
                 os.path.join(
                     "checkpoints",
-                    f"model_{NUM_EPOCHS}_{BATCH_SIZE}_{LEARNING_RATE}.pth",
+                    f"model_{NUM_EPOCHS}_{BATCH_SIZE}_{LEARNING_RATE}_att.pth",
                 ),
             )
         else:
@@ -134,7 +134,7 @@ def train():
                 break
 
     print(
-        f"Training complete. Model saved to checkpoints/model_{NUM_EPOCHS}_{BATCH_SIZE}_{LEARNING_RATE}.pth"
+        f"Training complete. Model saved to checkpoints/model_{NUM_EPOCHS}_{BATCH_SIZE}_{LEARNING_RATE}_timm.pth"
     )
     print("==============================")
 
